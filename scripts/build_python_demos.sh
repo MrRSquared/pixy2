@@ -15,7 +15,7 @@ function RED_TEXT {
 
 WHITE_TEXT
 echo "########################################################################################"
-echo "# Building Python (SWIG) Demos...                                                      #"
+echo "# Building Python (3?) (SWIG) Demos...                                                      #"
 echo "########################################################################################"
 NORMAL_TEXT
 
@@ -29,7 +29,7 @@ mkdir $TARGET_BUILD_FOLDER/python_demos
 cd ../src/host/libpixyusb2_examples/python_demos
 
 swig -c++ -python pixy.i
-python setup.py build_ext --inplace -D__LINUX__
+python3 setup.py build_ext --inplace -D__LINUX__
 
 if [ -f ../../../../build/python_demos/_pixy.so ]; then
   rm ../../../../build/python_demos/_pixy.so
