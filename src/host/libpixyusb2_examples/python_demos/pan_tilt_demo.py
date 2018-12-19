@@ -5,15 +5,15 @@ from pixy import *
 # Pixy2 Python SWIG pan/tilt demo #
 
 # Constants #
-PID_MAXIMUM_INTEGRAL      =  2000
+PID_MAXIMUM_INTEGRAL      = 2000
 PID_MINIMUM_INTEGRAL      = -2000
-ZUMO_BASE_DEADBAND        =    20
-PIXY_RCS_MAXIMUM_POSITION =  1000
+ZUMO_BASE_DEADBAND        =   20
+PIXY_RCS_MAXIMUM_POSITION = 1000
 PIXY_RCS_MINIMUM_POSITION =     0
 PIXY_RCS_CENTER_POSITION  = ((PIXY_RCS_MAXIMUM_POSITION - PIXY_RCS_MINIMUM_POSITION) / 2)
 MINIMUM_BLOCK_AGE_TO_LOCK =    30
-PAN_GAIN                  =   400
-TILT_GAIN                 =   500
+PAN_GAIN                  =  400
+TILT_GAIN                 =  500
 
 def Reset ():
   global Locked_On_Block
@@ -33,7 +33,7 @@ class PID_Controller:
     self.Reset ()
 
   def Reset (self):
-    self.Previous_Error  = 0x80000000
+    self.Previous_Error  =  0x80000000
     self.Integral_Value  = 0
     if self.Servo:
       self.Command = PIXY_RCS_CENTER_POSITION
@@ -55,6 +55,7 @@ class PID_Controller:
 
       # Calculate Proportion, Integral, Derivative (PID) term #
       PID = (Error * self.Proportion_Gain + ((self.Integral_Value * self.Integral_Gain) >> 4) + (Error - self.Previous_Error) * self.Derivative_Gain) >> 10;
+      #(Error * self.Proportion_Gain + ((self.Integral_Value * self.Integral_Gain)) + (Error - self.Previous_Error) * self.Derivative_Gain);
 
       if self.Servo:
         # Integrate the PID term because the servo is a position device #
@@ -111,7 +112,7 @@ while 1:
           Pan_PID_Controller.Update (Pan_Offset)
           Tilt_PID_Controller.Update (Tilt_Offset)
 
-          pixy.set_servos (Pan_PID_Controller.Command, Tilt_PID_Controller.Command)
+          pixy.set_servos (int(round(Pan_PID_Controller.Command)), int(round(Tilt_PID_Controller.Command)))
     else:
       print(('Frame %3d:' % (Frame)))
 
@@ -125,4 +126,3 @@ while 1:
         Locked_On_Block    = True
   else:
     Reset ()
-
